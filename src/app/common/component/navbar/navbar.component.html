@@ -9,35 +9,6 @@
             <b> Søg</b>
           </a>
         </li>
-        <li *ngIf="authService.User.profile.skalModtagelseVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/modtagelse' ? 'nav-link selected': 'nav-link'" routerLink="/modtagelse">Modtagelse</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalRegistreringVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/registration' ? 'nav-link selected': 'nav-link'" routerLink="/registration">Registering</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalOprensningVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/purification' ? 'nav-link selected': 'nav-link'" routerLink="/purification">Oprensning</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalLaboratorieVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/laboratorie' ? 'nav-link selected': 'nav-link'" routerLink="/laboratorie">Laboratorie</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalPostLabVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/post-lab' ? 'nav-link selected': 'nav-link'" routerLink="/post-lab">Post-Lab</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalEksternVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/ekstern-rekvisition' ? 'nav-link selected': 'nav-link'" routerLink="/ekstern-rekvisition">Ekstern
-              Rekvisition</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalAdministrationVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/administration' ? 'nav-link selected': 'nav-link'" routerLink="/administration">Administration</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalAfregningVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/afregning' ? 'nav-link selected': 'nav-link'" routerLink="/afregning">Afregning</a></b>
-        </li>
-        <li *ngIf="authService.User.profile.skalDataVises()" class="nav-item">
-          <b><a [ngClass]="router.url === '/data' ? 'nav-link selected': 'nav-link'" routerLink="/data">Opret data</a></b>
-        </li>
-
         <li class="nav-item">
           <button class="btn" (click)="authService.logout()">log ud</button>
         </li>

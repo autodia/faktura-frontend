@@ -4,6 +4,7 @@ import {
   MatTableModule,
   MatGridListModule,
   MatSelectModule,
+  MatIconModule,
   MatNativeDateModule,
   MatDatepickerModule,
   MatAutocompleteModule,
@@ -11,6 +12,8 @@ import {
   MatButtonModule,
   MatTabsModule
 } from '@angular/material';
+
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import { ToasterModule, ToasterService } from 'angular2-toaster';
 import { StorageServiceModule } from 'ngx-webstorage-service';
@@ -24,16 +27,19 @@ import { NoAccessComponent } from './common/component/no-access/no-access.compon
 
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { UploadService } from './common/services/upload.service';
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
+    component: HomeComponent,
   },
   {
     path: 'no-access',
@@ -51,13 +57,16 @@ const routes: Routes = [
     BannerComponent,
     NavbarComponent,
     NotFoundComponent,
-    NoAccessComponent
+    NoAccessComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ToasterModule,
     MatInputModule,
+    BrowserAnimationsModule,
+    MatIconModule,
     MatCardModule,
     MatTableModule,
     MatGridListModule,
@@ -68,6 +77,7 @@ const routes: Routes = [
     MatExpansionModule,
     MatButtonModule,
     MatTabsModule,
+    MaterialFileInputModule,
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
@@ -78,7 +88,8 @@ const routes: Routes = [
     },
     JwtHelperService,
     ToasterService,
-    StorageServiceModule
+    StorageServiceModule,
+    UploadService
   ],
   bootstrap: [AppComponent]
 })

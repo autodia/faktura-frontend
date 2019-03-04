@@ -1,0 +1,11 @@
+<h5 class="card-title">Upload faktura</h5>
+
+<button class="fileSelectBtn" mat-flat-button #fileSelector (click)="fileInput.click()">Vælg Fil</button>
+<input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+<div *ngIf="selectedFile">{{ selectedFile.name }}</div>
+
+<div style="margin-top: 1rem;">
+  <button mat-flat-button color="warn" (click)="fileReset()" [disabled]="!selectedFile">Fjern fil</button>
+  <button style="margin-left: 1rem;" type="submit" color="primary" mat-flat-button (click)="uploadBilag()"
+    [disabled]="!selectedFile">Upload</button>
+</div>
