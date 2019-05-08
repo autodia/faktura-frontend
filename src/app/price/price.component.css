@@ -1,0 +1,73 @@
+
+
+.fileSelectBtn {
+    background-color: dimgray; 
+    color: white;
+}
+
+.item-text:hover {
+    color: #2693ff;
+    cursor: pointer;
+  }
+
+  .container{
+      margin-top: 1rem;
+  }
+
+  .center{
+      text-align: center;
+  }
+
+  .form-group-first{
+    margin:1rem;
+    margin-top:0.5rem;
+}
+
+  .form-field-width{
+    width:60%;
+}
+
+.mini-form-field-width{
+    width:10%;
+}
+
+.list-width{
+    width:90%;
+}
+
+.form-group{
+    margin:1rem;
+    margin-top:0px;
+}
+
+.margin-bottom{
+    margin-bottom: 1rem;
+}
+
+.top-button{
+    margin-bottom:2rem;
+}
+
+th { font-size: 18px; }
+
+textarea {
+	text-align: center;
+	font-size: 14px;
+}
+
+.table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td{
+	padding: 1px;
+}
+
+.table{
+	margin-bottom: 3px;
+}
+
+.yellow-background{
+    background-color: yellow;
+}
+
+.selected{
+    background-color: rgb(39, 176, 221);
+    color: white;
+}

@@ -14,6 +14,8 @@ import {
 } from '@angular/material';
 
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import localeDA from '@angular/common/locales/da';
+import { registerLocaleData } from '@angular/common';
 
 import { ToasterModule, ToasterService } from 'angular2-toaster';
 import { StorageServiceModule } from 'ngx-webstorage-service';
@@ -29,17 +31,27 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UploadService } from './common/services/upload.service';
+import { PriceComponent } from './price/price.component';
+import { PriceService } from './common/services/price.service';
+import { AnalysePrisService } from './common/services/analyse-pris.service';
+import { AnalyseTypeService } from './common/services/analyse-type.service';
+
+registerLocaleData(localeDA);
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: 'priser',
+    component: PriceComponent,
   },
   {
     path: 'no-access',
@@ -58,12 +70,13 @@ const routes: Routes = [
     NavbarComponent,
     NotFoundComponent,
     NoAccessComponent,
-    HomeComponent
+    HomeComponent,
+    PriceComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ToasterModule,
+    ToasterModule.forRoot(),
     MatInputModule,
     BrowserAnimationsModule,
     MatIconModule,
@@ -82,6 +95,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: "da" },
     {
       provide: ErrorHandler,
       useClass: AppErrorHandler
@@ -89,7 +103,10 @@ const routes: Routes = [
     JwtHelperService,
     ToasterService,
     StorageServiceModule,
-    UploadService
+    UploadService,
+    PriceService,
+    AnalysePrisService,
+    AnalyseTypeService
   ],
   bootstrap: [AppComponent]
 })

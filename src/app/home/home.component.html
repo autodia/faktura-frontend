@@ -1,11 +1,17 @@
-<h5 class="card-title">Upload faktura</h5>
+<div class="container center">
+  <h5 style="margin-top:1rem" class="card-title">Upload faktura</h5>
 
-<button class="fileSelectBtn" mat-flat-button #fileSelector (click)="fileInput.click()">Vælg Fil</button>
-<input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
-<div *ngIf="selectedFile">{{ selectedFile.name }}</div>
+  <button class="fileSelectBtn" mat-flat-button #fileSelector (click)="fileInput.click()">Vælg Fil</button>
+  <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+  <div *ngIf="selectedFile">{{ selectedFile.name }}</div>
 
-<div style="margin-top: 1rem;">
-  <button mat-flat-button color="warn" (click)="fileReset()" [disabled]="!selectedFile">Fjern fil</button>
-  <button style="margin-left: 1rem;" type="submit" color="primary" mat-flat-button (click)="uploadBilag()"
-    [disabled]="!selectedFile">Upload</button>
+  <div style="margin-top: 1rem;">
+    <button mat-flat-button color="warn" (click)="fileReset()" [disabled]="!selectedFile">Fjern fil</button>
+    <button style="margin-left: 1rem;" type="submit" color="primary" mat-flat-button (click)="uploadBilag()"
+      [disabled]="!selectedFile">Upload</button>
+  </div>
+</div>
+
+<div>
+    <toaster-container [toasterconfig]="config"></toaster-container>
 </div>

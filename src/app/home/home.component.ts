@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { ToasterService } from 'angular2-toaster';
+import { ToasterService, ToasterConfig } from 'angular2-toaster';
 import { UploadService } from '../common/services/upload.service';
 import { AppError } from '../common/error-handling/app-error';
 
@@ -9,6 +9,9 @@ import { AppError } from '../common/error-handling/app-error';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  public config: ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-right'
+  });
 
   @ViewChild('fileInput')
   fileInput: ElementRef;
