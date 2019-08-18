@@ -1,5 +1,7 @@
+import { AnalyseType } from './analyse-type';
+
 /**
- * @module Authentication
+ * @module Model
  */
 
 export class AnalysePris {
@@ -10,7 +12,8 @@ export class AnalysePris {
     ekstern_pris: number
     gyldig_fra: Date
     gyldig_til: Date
-    analyse_type: number
+    
+    analyse_type: AnalyseType
     duplikat: boolean
 
     flatten() {
@@ -21,7 +24,7 @@ export class AnalysePris {
             ekstern_pris: this.ekstern_pris,
             gyldig_fra: this.gyldig_fra,
             gyldig_til: this.gyldig_til,
-            analyse_type: this.analyse_type
+            analyse_type: this.analyse_type.id
         }
     }
 }

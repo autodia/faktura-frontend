@@ -2,6 +2,11 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { ToasterService, ToasterConfig } from 'angular2-toaster';
 import { UploadService } from '../common/services/upload.service';
 import { AppError } from '../common/error-handling/app-error';
+import { ParsingService } from '../common/services/parsing.service';
+import { Parsing } from '../common/model/parsing';
+import { AuthService } from '../common/services/auth.service';
+import { FakturaPdfComponent } from '../common/component/faktura-pdf/faktura-pdf.component';
+import { Faktura } from '../common/model/faktura';
 
 @Component({
   selector: 'app-home',
@@ -16,13 +21,21 @@ export class HomeComponent {
   @ViewChild('fileInput')
   fileInput: ElementRef;
 
+  @ViewChild('presentation') presentation: FakturaPdfComponent;
+
   /**
  * The file selected by the user
  */
   selectedFile: File;
 
+  /**
+   * The current faktura that is being converted to PDF
+   */
+  fakturaToPDF: Faktura = undefined;
+
   constructor(private toasterService: ToasterService,
-    private uploadService: UploadService) { }
+    private parsingService: ParsingService,
+    private authService: AuthService) { }
 
   /**
  * Function to remember selected file
@@ -41,18 +54,35 @@ export class HomeComponent {
     this.fileInput.nativeElement.value = null;
   }
 
-  uploadBilag() {
-    let form = new FormData();
-    form.append('file', this.selectedFile, this.selectedFile.name)
+  createParsing() {
+    let parsing_form = new FormData();
 
-    this.uploadService.upload(form)
-      .subscribe(_ => {
-        this.toasterService.pop('success', 'Success', 'Faktura filen blev tilføjet');
+    parsing_form.append('data_fil', this.selectedFile, this.selectedFile.name)
+    //parsing_form.append('fakturaer', "Test")
+    //parsing_form.append('oprettet_af', this.authService.User.profile.id.toString())
+
+
+    this.parsingService.create(parsing_form, true)
+      .subscribe(parsing => {
+        console.log(parsing);
+
+        this.fakturaToPDF = parsing.fakturaer[0];
+
+        setTimeout(() => {
+          this.createPDF();
+        }, 1000);        
+
+        this.toasterService.pop('success', 'Success', 'Fakturaerne blev oprettet');
       },
         (error: AppError) => {
-          this.toasterService.pop('failure', 'Faktura filen blev ikke tilføjet');
+          this.toasterService.pop('failure', 'Fakturaerne blev ikke oprettet');
           console.log(error)
         }
       );
+  }
+
+  async createPDF() {
+    const pdf: any = await this.presentation.convertToPdf();
+    pdf.save('test.pdf');
   }
 }

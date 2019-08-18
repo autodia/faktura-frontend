@@ -9,6 +9,7 @@ import { AnalysePrisService } from '../common/services/analyse-pris.service';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BadInputError } from '../common/error-handling/bad-request-error';
+import { DownloadService } from '../common/services/download.service';
 
 @Component({
   selector: 'app-price',
@@ -31,10 +32,42 @@ export class PriceComponent implements OnInit {
  */
   selectedFile: File;
 
+  /**
+   * The different types of templates that the user can download
+   */
+  templates: string[] = ["KI", "KB", "GM", "VTL"]
+
+  /**
+   * The selected template
+   */
+  template = "KI";
+
   constructor(private toasterService: ToasterService,
     private priceService: PriceService,
     private analyseTypeService: AnalyseTypeService,
-    private analysePrisService: AnalysePrisService) { }
+    private analysePrisService: AnalysePrisService,
+    private downloadService: DownloadService) { }
+
+  /**
+ * Downloads the file attached to the faktura object from the database
+ */
+  downloadTemplate() {
+    let popup = window.open('', '_blank');
+
+    let path = "templates/" + this.template + "_template.xlsx";
+
+    this.downloadService.download(path).
+      subscribe(file => {
+        var url = window.URL.createObjectURL(file);
+        popup.location.href = url;
+        popup.focus();
+        popup.onblur = function () { popup.close() };
+      },
+        (error: AppError) => {
+          console.log("Error getting file", error)
+        }
+      );
+  }
 
   /**
  * Function to remember selected file
@@ -60,10 +93,23 @@ export class PriceComponent implements OnInit {
     this.priceService.createPrices(form)
       .subscribe(response => {
 
+        //Create list of analyse_koder
+        let analyse_type_objects = [];
+        for (let item of JSON.parse(response.analyse_type_objects)) {
+          let analyse_type_object = item.fields as AnalyseType
+
+          analyse_type_object.id = item.pk;
+          analyse_type_objects.push(analyse_type_object)
+        }
+
         //Create objects from response
         this.analyse_typer = []
         for (let item of JSON.parse(response.new_analyse_typer)) {
           let analyse_type = item.fields as AnalyseType
+
+          analyse_type.id = item.pk;
+          analyse_type.flatten = AnalyseType.prototype.flatten;
+
           this.analyse_typer.push(analyse_type)
         }
 
@@ -78,10 +124,18 @@ export class PriceComponent implements OnInit {
         });
 
         //Create objects from response
+        let index = 0;
         this.priser = []
         for (let item of JSON.parse(response.prices)) {
           let analyse_pris = item.fields as AnalysePris
-          this.priser.push(analyse_pris)
+
+          analyse_pris.id = item.pk;
+          analyse_pris.analyse_type = analyse_type_objects[index];
+          analyse_pris.flatten = AnalysePris.prototype.flatten;
+
+          this.priser.push(analyse_pris)          
+
+          index++;
         }
 
         //Mark duplicates
@@ -113,7 +167,7 @@ export class PriceComponent implements OnInit {
     this.priser.splice(index, 1);
     if (markDuplikates)
       this.markPriceDuplicates(this.priser)
-  }  
+  }
 
   submitTypes() {
     let observables: Observable<void>[] = [];
@@ -121,13 +175,13 @@ export class PriceComponent implements OnInit {
     for (let analyse_type of this.analyse_typer) {
 
       //Skip if analysetype is marked as duplicate
-      if(analyse_type.duplikat){
+      if (analyse_type.duplikat) {
         this.toasterService.pop('failure', 'Fejl', 'Kan ikke oprettet ny analysetype så længe der findes en duplikat');
         continue
       }
 
       observables.push(
-        this.analyseTypeService.create(analyse_type).
+        this.analyseTypeService.create(analyse_type.flatten()).
           pipe(map(newAnalyseType => {
             console.log("Created analysetype: ", newAnalyseType);
           },
@@ -149,7 +203,7 @@ export class PriceComponent implements OnInit {
 
         this.toasterService.pop('success', 'Success', 'De nye analysetyper blev oprettet');
 
-        if(this.analyse_typer.length == 0){
+        if (this.analyse_typer.length == 0) {
           this.uploadPriceFile()
         }
       },
@@ -165,14 +219,16 @@ export class PriceComponent implements OnInit {
 
     for (let pris of this.priser) {
 
+      console.log(pris.flatten())
+
       //Skip if pris is marked as duplicate
-      if(pris.duplikat){
+      if (pris.duplikat) {
         this.toasterService.pop('failure', 'Fejl', 'Kan ikke oprettet ny pris så længe der findes en duplikat');
         continue
       }
 
       observables.push(
-        this.analysePrisService.create(pris).
+        this.analysePrisService.create(pris.flatten()).
           pipe(map(newAnalysePris => {
             console.log("Created analysepris: ", newAnalysePris);
           },
@@ -201,7 +257,7 @@ export class PriceComponent implements OnInit {
       )
   }
 
-  markTypeDuplicates(list) {
+  markTypeDuplicates(list: AnalyseType[]) {
     var seen = {}
     for (let x of list) {
       if (seen[x.ydelses_kode]) {
@@ -215,16 +271,16 @@ export class PriceComponent implements OnInit {
     }
   }
 
-  markPriceDuplicates(list) {
+  markPriceDuplicates(list: AnalysePris[]) {
     var seen = {}
     for (let x of list) {
-      if (seen[x.analyse_type]) {
+      if (seen[x.analyse_type.ydelses_kode]) {
         for (let found_duplicate of list.filter(y => y.analyse_type === x.analyse_type)) {
           found_duplicate.duplikat = true;
         }
         continue
       }
-      seen[x.analyse_type] = true
+      seen[x.analyse_type.ydelses_kode] = true
       x.duplikat = false
     }
   }

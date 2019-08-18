@@ -41,6 +41,9 @@ import { PriceComponent } from './price/price.component';
 import { PriceService } from './common/services/price.service';
 import { AnalysePrisService } from './common/services/analyse-pris.service';
 import { AnalyseTypeService } from './common/services/analyse-type.service';
+import { FormsModule } from '@angular/forms';
+import { DownloadService } from './common/services/download.service';
+import { FakturaPdfComponent } from './common/component/faktura-pdf/faktura-pdf.component';
 
 registerLocaleData(localeDA);
 
@@ -71,10 +74,12 @@ const routes: Routes = [
     NotFoundComponent,
     NoAccessComponent,
     HomeComponent,
-    PriceComponent
+    PriceComponent,
+    FakturaPdfComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     ToasterModule.forRoot(),
     MatInputModule,
@@ -106,7 +111,8 @@ const routes: Routes = [
     UploadService,
     PriceService,
     AnalysePrisService,
-    AnalyseTypeService
+    AnalyseTypeService,
+    DownloadService,
   ],
   bootstrap: [AppComponent]
 })

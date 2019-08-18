@@ -1,7 +1,7 @@
 import { AnalysePris } from './analyse-pris';
 
 /**
- * @module Authentication
+ * @module Model
  */
 
 export class AnalyseType {
@@ -22,11 +22,13 @@ export class AnalyseType {
 
         let flatPriser = []
 
-        for(let pris of this.priser){
-            flatPriser.push(pris.id)
+        if (this.priser) {
+            for (let pris of this.priser) {
+                flatPriser.push(pris.id)
+            }
         }
 
-        let return_obj =  {
+        let return_obj = {
             id: this.id,
             ydelses_kode: this.ydelses_kode,
             ydelses_navn: this.ydelses_navn,

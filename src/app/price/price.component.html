@@ -1,65 +1,36 @@
-<div class="container center">
-  <h5 style="margin-top:1rem" class="card-title">Upload faktura</h5>
-
-  <button class="fileSelectBtn" mat-flat-button #fileSelector (click)="fileInput.click()">Vælg Fil</button>
-  <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
-  <div *ngIf="selectedFile">{{ selectedFile.name }}</div>
-
-  <div style="margin-top: 1rem;">
-    <button mat-flat-button color="warn" (click)="fileReset()" [disabled]="!selectedFile">Fjern fil</button>
-    <button style="margin-left: 1rem;" type="submit" color="primary" mat-flat-button (click)="uploadPriceFile()"
-      [disabled]="!selectedFile">Upload</button>
-  </div>
-</div>
-
-<div class="center container" *ngIf="priser.length > 0 && analyse_typer.length == 0">
+<div class="container">
   <div class="row">
-    <div class="list-group col-md-10 offset-md-1">
-      <div class="row align-items-center justify-content-center">
-        <div class="card list-width">
-          <div class="card-header text-white bg-info">
-            <div class="card-header-top w-100 justify-content-between center">
-              <h3 class="mb-1">Nye Priser:</h3>
-            </div>
-          </div>
 
-          <div class="card-body">
+    <div class="col-md-3 center">
+      <h5 style="margin-top:1rem" class="card-title">Templates:</h5>
 
-              <button type="button" class="center margin-bottom btn btn-success" (click)="submitPrices()">Opret nye
-                  priser</button>
+      <select [(ngModel)]="template" name="selectedTemplate" id="selectedTemplate"
+        class="form-control-sm table-item-width center" #selectedTemplate="ngModel">
+        <option *ngFor="let template of templates" [value]="template"> {{template}} </option>
+      </select>
 
-            <ul class="list-group">
-              <div *ngFor="let pris of priser; let i = index">
-                <li class="list-group-item">
-                  <div class="d-flex w-100 justify-content-between">
-                    <label style="margin-bottom:0px; margin-top:0.2rem">Intern pris:
-                      {{pris.intern_pris}}</label>
-                    <label style="margin-bottom:0px; margin-top:0.2rem">Gyldig fra:
-                      {{pris.gyldig_fra | date}}</label>
-                  </div>
-                  <div class="d-flex w-100 justify-content-between">
-                    <label style="margin-bottom:0px; margin-top:0.2rem">Ekstern pris:
-                      {{pris.ekstern_pris}}</label>
-                    <label style="margin-bottom:0px; margin-top:0.2rem">Gyldig til:
-                      {{pris.gyldig_til | date}}</label>
-                  </div>
-                  <div class="d-flex w-100 justify-content-between">
-                    <label style="margin-bottom:0px; margin-top:0.2rem">Analysetype: {{pris.analyse_type}}</label>
-                  </div>
-                  <div class="d-flex w-100 justify-content-between">
-                    <label *ngIf="pris.duplikat"
-                      style="margin-bottom:0px; margin-top:0.2rem; color:red">DUPLIKAT</label>
-                    <label *ngIf="!pris.duplikat"></label>
-                    <button type="button" class="btn btn-danger" (click)="removePrice(i, true)">Fjern</button>
-                  </div>
-                </li>
-              </div>
-            </ul>
-          </div>
-        </div>
+      <div>
+        <button style="margin-top:1rem" class="btn btn-primary" (click)="downloadTemplate()">Hent template</button>
+      </div>
+
+    </div>
+
+    <div class="col-md-6 center">
+      <h5 style="margin-top:1rem" class="card-title">Upload ny prisliste</h5>
+
+      <button class="fileSelectBtn" mat-flat-button #fileSelector (click)="fileInput.click()">Vælg Fil</button>
+      <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+      <div *ngIf="selectedFile">{{ selectedFile.name }}</div>
+
+      <div style="margin-top: 1rem;">
+        <button mat-flat-button color="warn" (click)="fileReset()" [disabled]="!selectedFile">Fjern fil</button>
+        <button style="margin-left: 1rem;" type="submit" color="primary" mat-flat-button (click)="uploadPriceFile()"
+          [disabled]="!selectedFile">Upload</button>
       </div>
     </div>
+
   </div>
+
 </div>
 
 <div class="center container" *ngIf="analyse_typer.length > 0">
@@ -98,6 +69,57 @@
                       style="margin-bottom:0px; margin-top:0.2rem; color:red">DUPLIKAT</label>
                     <label *ngIf="!type.duplikat"></label>
                     <button type="button" class="btn btn-danger" (click)="removeType(i, true)">Fjern</button>
+                  </div>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="center container" *ngIf="priser.length > 0 && analyse_typer.length == 0">
+  <div class="row">
+    <div class="list-group col-md-10 offset-md-1">
+      <div class="row align-items-center justify-content-center">
+        <div class="card list-width">
+          <div class="card-header text-white bg-info">
+            <div class="card-header-top w-100 justify-content-between center">
+              <h3 class="mb-1">Nye Priser:</h3>
+            </div>
+          </div>
+
+          <div class="card-body">
+
+            <button type="button" class="center margin-bottom btn btn-success" (click)="submitPrices()">Opret nye
+              priser</button>
+
+            <ul class="list-group">
+              <div *ngFor="let pris of priser; let i = index">
+                <li class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <label style="margin-bottom:0px; margin-top:0.2rem">Intern pris:
+                      {{pris.intern_pris}}</label>
+                    <label style="margin-bottom:0px; margin-top:0.2rem">Gyldig fra:
+                      {{pris.gyldig_fra | date}}</label>
+                  </div>
+                  <div class="d-flex w-100 justify-content-between">
+                    <label style="margin-bottom:0px; margin-top:0.2rem">Ekstern pris:
+                      {{pris.ekstern_pris}}</label>
+                    <label style="margin-bottom:0px; margin-top:0.2rem">Gyldig til:
+                      {{pris.gyldig_til | date}}</label>
+                  </div>
+                  <div class="d-flex w-100 justify-content-between">
+                    <label style="margin-bottom:0px; margin-top:0.2rem">Analysetype:
+                      {{pris.analyse_type.ydelses_kode}}</label>
+                  </div>
+                  <div class="d-flex w-100 justify-content-between">
+                    <label *ngIf="pris.duplikat"
+                      style="margin-bottom:0px; margin-top:0.2rem; color:red">DUPLIKAT</label>
+                    <label *ngIf="!pris.duplikat"></label>
+                    <button type="button" class="btn btn-danger" (click)="removePrice(i, true)">Fjern</button>
                   </div>
                 </li>
               </div>
