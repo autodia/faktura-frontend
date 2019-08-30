@@ -1,7 +1,54 @@
 <div class="page">
   <div class="container" id="replyPage">
-    <div *ngFor="let analyse of faktura.analyser">
-      {{analyse.id}}
+
+    <div *ngIf="faktura.rekvirent.afdelingsnavn === faktura.rekvirent.hospital">
+      <h6 style="padding:1rem">Faktura for {{faktura.rekvirent.afdelingsnavn}} med GLN {{faktura.rekvirent.GLN_nummer}}
+      </h6>
     </div>
+
+    <div *ngIf="faktura.rekvirent.afdelingsnavn !== faktura.rekvirent.hospital">
+      <h6 style="padding:1rem">Faktura for {{faktura.rekvirent.afdelingsnavn}} på {{faktura.rekvirent.hospital}} med GLN
+        {{faktura.rekvirent.GLN_nummer}}</h6>
+    </div>
+
+    <div *ngIf="faktura.rekvirent.afdelingsnavn === faktura.rekvirent.hospital && !faktura.rekvirent.GLN_nummer">
+      <h6 style="padding:1rem">Faktura for {{faktura.rekvirent.afdelingsnavn}}
+      </h6>
+    </div>
+
+    <div *ngIf="faktura.rekvirent.afdelingsnavn !== faktura.rekvirent.hospital && ! faktura.rekvirent.GLN_nummer">
+      <h6 style="padding:1rem">Faktura for {{faktura.rekvirent.afdelingsnavn}} på {{faktura.rekvirent.hospital}}</h6>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">CPR-nummer</th>
+          <th scope="col">Svardato</th>
+          <th scope="col">Antal</th>
+          <th scope="col">Stykpris</th>
+          <th scope="col">Samlet pris</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let analyse of faktura.analyser">
+          <td>{{analyse.CPR}}</td>
+          <td>{{analyse.svar_dato | date}}</td>
+          <td>{{analyse.antal}}</td>
+          <td>{{math.round(analyse.styk_pris)}}</td>
+          <td>{{math.round(analyse.samlet_pris)}}</td>
+        </tr>
+      </tbody>
+      <thead>
+        <tr>
+          <th scope="col">Hovedtotal</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">{{math.round(faktura.samlet_pris)}}</th>
+        </tr>
+      </thead>
+    </table>
+
   </div>
 </div>

@@ -11,13 +11,25 @@ import html2canvas from 'html2canvas';
 export class FakturaPdfComponent implements OnInit {
   @Input() faktura: Faktura;
 
+  math = Math;
+
   constructor() { }
 
   ngOnInit() {
   }
 
   async convertToPdf() {
-    return await html2canvas(document.querySelector("#replyPage")).then(async canvas => {
+    let element = document.querySelector("#replyPage") as HTMLElement
+    console.log("HEYHEY", element.scrollHeight)
+    return await html2canvas(element, {
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      scale: 2    
+    }).then(async canvas => {
+
+      console.log(canvas)
 
       var contentWidth = canvas.width;
       var contentHeight = canvas.height;

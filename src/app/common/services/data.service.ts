@@ -53,10 +53,18 @@ export abstract class DataService<T> {
     const options = this.createOptions(params);
     const url = nested ? this.url + "-nested" : this.url;
 
-    return this.http.put<T>(url + '/' + resource.id + '/', resource, options).pipe(
-      map(this.handleResponse),
-      catchError(this.handleError)
-    )
+    if (!resource.id) {
+      return this.http.put<T>(url + '/' + resource.get('id') + '/', resource, options).pipe(
+        map(this.handleResponse),
+        catchError(this.handleError)
+      )
+    }
+    else {
+      return this.http.put<T>(url + '/' + resource.id + '/', resource, options).pipe(
+        map(this.handleResponse),
+        catchError(this.handleError)
+      )
+    }
   }
 
   patch(id, resource, params?: Map<string, string>): Observable<T> {
