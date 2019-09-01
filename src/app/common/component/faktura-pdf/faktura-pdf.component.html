@@ -20,7 +20,7 @@
       <h6 style="padding:1rem">Faktura for {{faktura.rekvirent.afdelingsnavn}} på {{faktura.rekvirent.hospital}}</h6>
     </div>
 
-    <table class="table">
+    <table class="table" id="table">
       <thead>
         <tr>
           <th scope="col">CPR-nummer</th>
@@ -30,8 +30,8 @@
           <th scope="col">Samlet pris</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let analyse of faktura.analyser">
+      <tbody id="tbody">
+        <tr *ngFor="let analyse of faktura.analyser; let i = index" id="row-{{i}}">
           <td>{{analyse.CPR}}</td>
           <td>{{analyse.svar_dato | date}}</td>
           <td>{{analyse.antal}}</td>
@@ -39,7 +39,7 @@
           <td>{{math.round(analyse.samlet_pris)}}</td>
         </tr>
       </tbody>
-      <thead>
+      <thead id="tfoot">
         <tr>
           <th scope="col">Hovedtotal</th>
           <th scope="col"></th>
@@ -51,4 +51,11 @@
     </table>
 
   </div>
+
+  <div class="container footer-container" id="footer">
+    <div class="footer">
+        Side {{pagesAdded + 1}} / {{pages}}
+    </div>    
+  </div>
+
 </div>

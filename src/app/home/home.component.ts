@@ -78,32 +78,11 @@ export class HomeComponent {
       .subscribe(parsing => {
         console.log(parsing);
 
-        let index = 0;
+        this.fakturaToPDF = parsing.fakturaer[0];
 
-        for (let faktura of parsing.fakturaer) {
-          index++;
-
-          if (index === parsing.fakturaer.length) {
-            setTimeout(() => {
-              this.fakturaToPDF = faktura
-              setTimeout(() => {
-                this.createPDF(faktura);
-                this.uploadDisabled = false;
-                this.spinner.hide();
-              }, 1000)
-            }, 5000 * index);
-          }
-          else {
-            setTimeout(() => {
-              this.fakturaToPDF = faktura
-              setTimeout(() => {
-                this.createPDF(faktura);
-              }, 1000);
-            }, 5000 * index);
-          }
-        }
-
-
+        setTimeout(() => {
+          this.callCreatePDF(0, parsing);
+        }, 2000);
 
         this.toasterService.pop('success', 'Success', 'Fakturaerne blev oprettet');
       },
@@ -115,6 +94,28 @@ export class HomeComponent {
           console.log(error)
         }
       );
+  }
+
+  async callCreatePDF(i: number, parsing: Parsing) {
+    if (i === parsing.fakturaer.length) {
+      this.uploadDisabled = false;
+      this.spinner.hide();
+      this.fakturaToPDF = undefined;
+    }
+    else if (i < parsing.fakturaer.length) {
+      await this.createPDF(parsing.fakturaer[i]).then(_ => {
+        this.fakturaToPDF = parsing.fakturaer[i + 1]
+        setTimeout(() => {
+          this.callCreatePDF(i + 1, parsing);
+        }, 2000);
+      })
+    }
+    else {
+      this.uploadDisabled = false;
+      this.spinner.hide();
+      this.fakturaToPDF = undefined;
+    }
+
   }
 
   async createPDF(faktura: Faktura) {
@@ -130,7 +131,7 @@ export class HomeComponent {
 
     this.fakturaService.update(fakturaForm)
       .subscribe(updatedFaktura => {
-        console.log(updatedFaktura)
+        console.log("Updated faktura", updatedFaktura)
       },
         (error: AppError) => {
           this.uploadDisabled = false;
