@@ -24,7 +24,7 @@ ARG env
 RUN echo "$env"
 
 # generate build
-RUN ng build --prod --c="$env"
+RUN node --max_old_space_size=4096 node_modules/@angular/cli/bin/ng build --prod --c="$env"
 
 ##################
 ### production ###

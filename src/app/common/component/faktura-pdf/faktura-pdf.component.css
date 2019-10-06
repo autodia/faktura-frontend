@@ -7,3 +7,25 @@
     width: 21cm;
     min-height: 29.7cm;
   }
+
+  .center{
+    text-align: center;
+  }
+
+  td{
+    border-top: 2px solid #dee2e6;
+  }
+
+  thead{
+    border-top: 4px solid #dee2e6;
+    border-bottom: 4px solid #dee2e6;
+  }
+
+  .footer{
+    float: right;
+    margin: 1rem;
+  }
+
+  .footer-container{
+    overflow: hidden;
+  }

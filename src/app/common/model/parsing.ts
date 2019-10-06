@@ -1,6 +1,7 @@
 
 import { Profile } from './profile';
 import { Faktura } from './faktura';
+import { Type } from 'class-transformer';
 
 /**
  * @module Model
@@ -15,6 +16,7 @@ export class Parsing {
     oprettet: Date
     oprettet_af: Profile
 
+    @Type(() => Faktura)
     fakturaer: Faktura[]
 
     flatten() {

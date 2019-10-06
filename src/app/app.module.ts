@@ -21,6 +21,7 @@ import { ToasterModule, ToasterService } from 'angular2-toaster';
 import { StorageServiceModule } from 'ngx-webstorage-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AppErrorHandler } from './common/error-handling/app-error-handler';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { BannerComponent } from './common/component/banner/banner.component';
 import { NavbarComponent } from './common/component/navbar/navbar.component';
@@ -97,6 +98,7 @@ const routes: Routes = [
     MatTabsModule,
     MaterialFileInputModule,
     HttpClientModule,
+    NgxSpinnerModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
