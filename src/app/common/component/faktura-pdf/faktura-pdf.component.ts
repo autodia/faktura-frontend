@@ -2,9 +2,6 @@ import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { Faktura } from '../../model/faktura';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
-import { image } from 'html2canvas/dist/types/css/types/image';
-import { withLatestFrom } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 export interface ImageData {
   imgWidth: number,
