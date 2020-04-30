@@ -28,7 +28,7 @@
     "class-transformer": "^0.2.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "ng-pick-datetime": "^7.0.0",
     "ngx-bootstrap": "^4.1.1",
     "ngx-material-file-input": "^1.1.0",
