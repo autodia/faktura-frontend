@@ -45,6 +45,8 @@ import { AnalyseTypeService } from './common/services/analyse-type.service';
 import { FormsModule } from '@angular/forms';
 import { DownloadService } from './common/services/download.service';
 import { FakturaPdfComponent } from './common/component/faktura-pdf/faktura-pdf.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './common/services/guards/auth-guard.service';
 
 registerLocaleData(localeDA);
 
@@ -52,14 +54,21 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'priser',
     component: PriceComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'no-access',
-    component: NoAccessComponent
+    component: NoAccessComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',
@@ -74,6 +83,7 @@ const routes: Routes = [
     NavbarComponent,
     NotFoundComponent,
     NoAccessComponent,
+    LoginComponent,
     HomeComponent,
     PriceComponent,
     FakturaPdfComponent
@@ -111,6 +121,7 @@ const routes: Routes = [
     ToasterService,
     StorageServiceModule,
     UploadService,
+    AuthGuard,
     PriceService,
     AnalysePrisService,
     AnalyseTypeService,

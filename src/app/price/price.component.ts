@@ -35,7 +35,7 @@ export class PriceComponent implements OnInit {
   /**
    * The different types of templates that the user can download
    */
-  templates: string[] = ["KI", "KB", "GM", "VTL"]
+  templates: string[] = ["KI", "KB", "GM", "VTL", "Pato"]
 
   /**
    * The selected template
@@ -85,10 +85,29 @@ export class PriceComponent implements OnInit {
     this.selectedFile = undefined;
     this.fileInput.nativeElement.value = null;
   }
+   
+  uploadPatowebPriceFile(form) {
+    this.priceService.createPatowebPrices(form)
+      .subscribe(response => {
+        this.toasterService.pop('success', 'Success', 'Prisfilen blev uploadet');
+      },
+        (error: AppError) => {
+          this.toasterService.pop('failure', 'Fejl', 'Prisfilen blev ikke uploadet');
+          console.log("Error", error)
+        }
+      );
+  }
 
   uploadPriceFile() {
     let form = new FormData();
     form.append('file', this.selectedFile, this.selectedFile.name)
+
+    if (this.selectedFile.name.includes("pato")){
+      this.uploadPatowebPriceFile(form)
+      return
+    }
+
+
 
     this.priceService.createPrices(form)
       .subscribe(response => {

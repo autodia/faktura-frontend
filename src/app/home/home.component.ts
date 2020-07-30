@@ -80,9 +80,9 @@ export class HomeComponent {
 
         this.fakturaToPDF = parsing.fakturaer[0];
 
-        setTimeout(() => {
-          this.callCreatePDF(0, parsing);
-        }, 2000);
+        // setTimeout(() => {
+        //   this.callCreatePDF(0, parsing);
+        // }, 2000);
 
         this.toasterService.pop('success', 'Success', 'Fakturaerne blev oprettet');
       },
@@ -115,7 +115,6 @@ export class HomeComponent {
       this.spinner.hide();
       this.fakturaToPDF = undefined;
     }
-
   }
 
   async createPDF(faktura: Faktura) {

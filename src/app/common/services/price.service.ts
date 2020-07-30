@@ -17,10 +17,12 @@ import { Router } from '@angular/router';
 export class PriceService {
   private endpoint = "priser";
   private url: string;
+  private patoweb_url: string;
 
   constructor(private http: HttpClient,
     public router: Router) {
     this.url = environment.url + "/" + this.endpoint + "/";
+    this.patoweb_url = environment.url + "/" + this.endpoint + "-" + "patoweb" + "/";
   }
 
   /**
@@ -29,6 +31,17 @@ export class PriceService {
    */
   createPrices(file) {
     return this.http.post<any>(this.url, file)
+      .pipe(map(response => {
+        return response;
+      }));
+  }
+
+  /**
+   * Creates new prices objects and returns them without saving them in the database 
+   * @param file The file which the prices will be generated from
+   */
+  createPatowebPrices(file) {
+    return this.http.post<any>(this.patoweb_url, file)
       .pipe(map(response => {
         return response;
       }));
