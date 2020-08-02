@@ -47,6 +47,7 @@ import { DownloadService } from './common/services/download.service';
 import { FakturaPdfComponent } from './common/component/faktura-pdf/faktura-pdf.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './common/services/guards/auth-guard.service';
+import { SendService } from './common/services/send.service';
 
 registerLocaleData(localeDA);
 
@@ -124,6 +125,7 @@ const routes: Routes = [
     AuthGuard,
     PriceService,
     AnalysePrisService,
+    SendService, 
     AnalyseTypeService,
     DownloadService,
   ],

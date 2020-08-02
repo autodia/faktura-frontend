@@ -97,7 +97,7 @@ export abstract class DataService<T> {
 
   addHeaderToken(headers: any) {
     let token = localStorage.getItem('token')
-    headers['Authorization'] = 'Bearer ' + token
+    headers['Authorization'] = token
   }
 
   construcParams(paramMap: Map<string, string>): HttpParams {

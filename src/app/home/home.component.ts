@@ -9,6 +9,7 @@ import { FakturaPdfComponent } from '../common/component/faktura-pdf/faktura-pdf
 import { Faktura } from '../common/model/faktura';
 import { FakturaService } from '../common/services/faktura.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SendService } from '../common/services/send.service';
 
 @Component({
   selector: 'app-home',
@@ -43,6 +44,7 @@ export class HomeComponent {
   constructor(private toasterService: ToasterService,
     private parsingService: ParsingService,
     private fakturaService: FakturaService,
+    private sendService: SendService,
     private authService: AuthService,
     private spinner: NgxSpinnerService) { }
 
@@ -85,6 +87,7 @@ export class HomeComponent {
         // }, 2000);
 
         this.toasterService.pop('success', 'Success', 'Fakturaerne blev oprettet');
+        this.spinner.hide();
       },
         (error: AppError) => {
           this.uploadDisabled = false;
@@ -94,6 +97,10 @@ export class HomeComponent {
           console.log(error)
         }
       );
+  }
+
+  send() {
+        this.sendService.send().subscribe(_ => {})
   }
 
   async callCreatePDF(i: number, parsing: Parsing) {
