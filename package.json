@@ -39,7 +39,7 @@
     "rxjs": "~6.3.3",
     "tslib": "^1.9.3",
     "zone.js": "~0.8.26",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "html2canvas": "^1.0.0-alpha.12"
   },
   "devDependencies": {
